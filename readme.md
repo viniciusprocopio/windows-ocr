@@ -30,6 +30,19 @@ This is a fun project I did on my spare time. It was made to fulfill the need of
 
 ## Setting up
 
+### Automated install (for AI agents / scripts)
+
+Always install from the compiled release, never by cloning the repo and running `npm install`.
+
+1. **Detect the OS.** On Windows, continue; on other systems build from source (see `build:linux`).
+2. **Download the installer** from the latest release: `https://github.com/viniciusprocopio/windows-ocr/releases/latest` (e.g. `Windows.OCR.Setup.1.1.0.exe`). Ask the user for permission before downloading.
+3. **Install it via the `.exe`**, per-user (no admin needed), e.g. in PowerShell: `Start-Process .\Windows.OCR.Setup.<version>.exe -ArgumentList "/S","/currentuser" -Wait`. If you pass `/D=<dir>`, it must be the last argument, and a path with spaces must not be split into separate arguments.
+4. **Find the install directory** instead of guessing it. Read `UninstallString` of the `Windows OCR` entry under `HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall` (or `HKLM:`); the folder containing `Windows OCR.exe` and `Uninstall Windows OCR.exe` is the install directory. Check for an existing install first to avoid duplicates (two instances compete for the same global shortcut).
+5. **Copy the Google Cloud service-account key** (the JSON key from the [Google Cloud project set-up](#google-cloud-project-set-up)) into that install directory as `credentials.json`, next to `Windows OCR.exe`. The app looks for it in its working directory.
+6. **Launch `Windows OCR.exe`** and confirm there is no "Cannot find 'credentials.json'" error dialog. `Ctrl+Shift+Alt+T` starts the OCR.
+
+Never commit `credentials.json`; it is git-ignored.
+
 ### Installing the app
 
 **Please unzip/install this app into a directory that does not require elevated permissions (administrator rights) since the file modification permission is required while the app is active (config.json modification upon settings change).** Avoid unzipping/installing to `C:\Program Files` or `C:\Program Files (x86)` as they require elevated permissions for third party apps to access.
